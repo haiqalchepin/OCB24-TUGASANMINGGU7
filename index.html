@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery minggu 7 fetch API exercise</title>
+</head>
+<body>
+  <center>
+    <h1>Pixel Photo Gallery</h1>
+    <div>
+      <input type="text" id="query" placeholder="Search for images...">
+      <button id="searchBtn">Search</button>
+    </div>
+  </center>
+  <div id="app"></div>
+
+  <script>
+
+    // Function to fetch images based on the query
+    function fetchImages(query) {
+      fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=10`, {
+        headers: {
+          'Authorization': '7XnRmWVgfg9l99J9RyOYHBddx1InZ3skBaa6u3PbufgXnusT4ftoxbtV'
+        }
+      })
+        .then(response => response.json())
+        .then(body => {
+          const imageList = body.photos.map((photo) => (
+            `<img src="${photo.src.large}"/>`
+          ));
+          
+          return imageList;
+        })
+        .then(list => {
+          document.getElementById('app').innerHTML = list;
+        })
+        .catch(err => {debugger});
+    }
+
+    // add on event listener to the search button
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      const query = document.getElementById('query').value;
+      fetchImages(query);
+    });
+  </script>
+</body>
+</html>
+
+
+
